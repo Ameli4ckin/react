@@ -2,3 +2,7 @@ node_modules
 build
 coverage
 stories
+config
+scripts
+.storybook
+.npmrc
