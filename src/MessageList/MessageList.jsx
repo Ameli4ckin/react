@@ -1,14 +1,14 @@
-// import { List, ListItem } from '@mui/material';
+import { List, ListItem } from '@mui/material';
 
 export const MessageList = ({ messages }) => {
     return (
-        <ul>
+        <List>
             {messages.map((message, idx) => (
-                <li key={idx}>
+                <ListItem key={idx}>
                     {message.author}: {message.value}
-                </li>
+                </ListItem>
             ))}
-        </ul>
+        </List>
     )
 }
 
