@@ -1,15 +1,20 @@
-import { useState } from 'react';
-import { AUTHOR } from '../constants';
-import Button from '@mui/material/Button';
+import { FC, useState } from 'react';
+import { Button } from './Button/Button'
 import TextField from '@mui/material/TextField';
+import { AUTHOR, Message } from '../types';
+import React from 'react';
 
-export const Form = ({ addMessage }) => {
+interface FormProps {
+    addMessage: (msg: Message) => void;
+}
+
+export const Form: FC<FormProps> = ({ addMessage }) => {
     const [value, setValue] = useState('');
 
-    const handleSubmit = (ev) => {
+    const handleSubmit = (ev: React.FormEvent<HTMLFormElement>) => {
         ev.preventDefault();
         addMessage({
-            author: AUTHOR.user,
+            author: AUTHOR.USER,
             value,
         });
         setValue('');
@@ -24,12 +29,7 @@ export const Form = ({ addMessage }) => {
                 inputRef={input => input && input.focus()}
             />
             <br />
-            <Button 
-                disabled={!value} 
-                variant="contained" 
-                type='submit'>
-                Send
-            </Button>
+            <Button label="send" disabled={!value} />
         </form>
     );
 };
