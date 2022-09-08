@@ -20,13 +20,17 @@ export const Form: FC<FormProps> = ({ addMessage }) => {
         setValue('');
     };
 
+
+
     return (
         <form onSubmit={handleSubmit}>
             <TextField 
                 value={value} 
                 onChange={(e) => setValue(e.target.value)}
                 label="Введите сообщение"
-                inputRef={input => input && input.focus()}
+                // inputRef={input => input && input.focus()}
+                autoFocus={true}
+                
             />
             <br />
             <Button label="send" disabled={!value} />
