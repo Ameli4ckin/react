@@ -32,7 +32,6 @@ export const Form: FC<FormProps> = ({ addMessage }) => {
 
     return (
         <form onSubmit={handleSubmit}>
-            {/* <input type="text" ref={inputRef} /> */}
             <TextField 
                 value={value} 
                 onChange={(e) => setValue(e.target.value)}
