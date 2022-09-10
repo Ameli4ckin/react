@@ -3,6 +3,9 @@ import { MessageList } from "./MessageList/MessageList";
 import { FC, useEffect, useState } from 'react';
 import { AUTHOR, Message, Messages } from "./types";
 import React from "react";
+import { Chat } from "./Chats";
+import "./App.css"
+
 
 export const App: FC = () => {
   const [messages, setMessages] = useState<Messages>([]);
@@ -28,7 +31,10 @@ export const App: FC = () => {
   }, [messages]);
     
   return <>
+    <div className="wrapper">
+    <Chat />
     <MessageList messages={messages} />
     <Form addMessage={addMessage}/>
+    </div>
   </>
 }
