@@ -3,24 +3,24 @@ import { Button } from './Button/Button'
 import TextField from '@mui/material/TextField';
 import { AUTHOR, Message } from '../types';
 import React from 'react';
+import { useParams } from 'react-router-dom';
 
 interface FormProps {
-    addMessage: (msg: Message) => void;
+    addMessage: (chatId: string, msg: Message) => void;
 }
-
-// interface RefObject<T> {
-//     readonly current: T | null
-// }
 
 export const Form: FC<FormProps> = ({ addMessage }) => {
     const [value, setValue] = useState('');
+    const { chatId } = useParams();
 
     const handleSubmit = (ev: React.FormEvent<HTMLFormElement>) => {
         ev.preventDefault();
-        addMessage({
-            author: AUTHOR.USER,
-            value,
-        });
+        if(chatId) {
+            addMessage(chatId,{
+                author: AUTHOR.USER,
+                value,
+            });
+        }
         setValue('');
     };
 
