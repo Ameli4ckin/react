@@ -1,36 +1,13 @@
 import React, { useEffect } from "react";
 import { FC } from "react"
 import { useParams, Navigate } from "react-router-dom"
-import { ChatList } from "../components/ChatList/ChatList"
-import { Form } from './../components/Form'
-import { MessageList } from "../MessageList/MessageList"
-import { AUTHOR, Chat, Message, Messages } from "../types";
-
-//   const addMessage = (newMessage: Message) => {
-//     setMessages((prevMessages) => [...prevMessages, newMessage]);
-//   };
-
-//   useEffect(() => {
-//     if (
-//        messages.length > 0 && 
-//        messages[messages.length - 1].author === AUTHOR.USER
-//       ) {
-//         const timeout = setTimeout(() => {
-//           addMessage({
-//           author: AUTHOR.BOT,
-//           value: 'Im BOT',
-//         });
-//       }, 1000);
-
-//       return () => clearTimeout(timeout)
-//     }
-//   }, [messages]);
-
-{/* <div className="wrapper">
-<Chat />
-<MessageList messages={messages} />
-<Form addMessage={addMessage}/>
-</div> */}
+import { ChatList } from "../../components/ChatList/ChatList"
+import { Form } from '../../components/Form'
+import { MessageList } from "../../MessageList/MessageList"
+import { AUTHOR, Chat, Message, Messages } from "../../types"
+import style from './ChatPage.module.css'
+//@ts-ignore
+import { WithClasses } from '../../HOC/WithClasses';
 
 interface ChatPageProps {
     chats: Chat[];
@@ -48,6 +25,7 @@ export const ChatPage: FC<ChatPageProps> = ({
     onDeleteChat
 }) => {
     const { chatId } = useParams();
+    const MessageListWithClass = WithClasses(MessageList)
 
     useEffect(() => {
         if (
@@ -76,7 +54,11 @@ export const ChatPage: FC<ChatPageProps> = ({
             onAddChat={onAddChat} 
             onDeleteChat={onDeleteChat}
         />
-        <MessageList messages={chatId ? messages[chatId] : []}/>
+        {/* <MessageList messages={chatId ? messages[chatId] : []}/> */}
+        <MessageListWithClass 
+            messages={chatId ? messages[chatId] : []} 
+            classes={ style.border }
+        />
         <Form addMessage={onAddMessage}/>
     </>
     );
