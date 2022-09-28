@@ -8,6 +8,8 @@ import { Main } from "./pages/Main";
 import { Profile } from "./pages/Profile";
 import { AUTHOR, Chat, Message, Messages } from "./types";
 import { ThemeContext } from "./utils/ThemeContext";
+import { Provider } from 'react-redux'
+import { store } from "./store";
 
 
 const defaultChats: Chat[] = [
@@ -55,36 +57,38 @@ export const App: FC = () => {
   }
 
   return ( 
-    <ThemeContext.Provider value={{ theme, toggleTheme }}>
-      <Routes>
-        <Route path="/" element={<Header />}>
-          <Route index element={<Main />}/>
-          <Route path="/profile" element={<Profile />}/>
-          <Route path="chats">
-            <Route 
-              index 
-              element={
-                <ChatList 
-                  chats={chats} 
-                  onAddChat={onAddChat} 
-                  onDeleteChat={onDeleteChat}/>}
-            />
-            <Route 
-              path=":chatId" 
-              element={
-                <ChatPage
-                  chats={chats} 
-                  onAddChat={onAddChat}
-                  messages={messages} 
-                  onAddMessage={onAddMessage}
-                  onDeleteChat={onDeleteChat}
-                />
-              }
-            />
+    <Provider store={store}>
+      <ThemeContext.Provider value={{ theme, toggleTheme }}>
+        <Routes>
+          <Route path="/" element={<Header />}>
+            <Route index element={<Main />}/>
+            <Route path="/profile" element={<Profile />}/>
+            <Route path="chats">
+              <Route 
+                index 
+                element={
+                  <ChatList 
+                    chats={chats} 
+                    onAddChat={onAddChat} 
+                    onDeleteChat={onDeleteChat}/>}
+              />
+              <Route 
+                path=":chatId" 
+                element={
+                  <ChatPage
+                    chats={chats} 
+                    onAddChat={onAddChat}
+                    messages={messages} 
+                    onAddMessage={onAddMessage}
+                    onDeleteChat={onDeleteChat}
+                  />
+                }
+              />
+            </Route>
           </Route>
-        </Route>
-        <Route path="*" element={<div>404 page</div>} />
-      </Routes>
-    </ThemeContext.Provider>
+          <Route path="*" element={<div>404 page</div>} />
+        </Routes>
+      </ThemeContext.Provider>
+    </Provider>
   );
 };

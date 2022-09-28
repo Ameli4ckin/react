@@ -6,7 +6,6 @@ import { Form } from '../../components/Form'
 import { MessageList } from "../../MessageList/MessageList"
 import { AUTHOR, Chat, Message, Messages } from "../../types"
 import style from './ChatPage.module.css'
-//@ts-ignore
 import { WithClasses } from '../../HOC/WithClasses';
 
 interface ChatPageProps {
