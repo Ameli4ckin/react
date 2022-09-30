@@ -47,6 +47,12 @@ export const App: FC = () => {
 
   const onDeleteChat = (chatId: string) => {
     setChats(chats.filter((chat) => chat.id !== chatId));
+
+    const newMessages = { ...messages };
+    delete newMessages[chatId];
+
+    setMessages(newMessages);
+    
   };
 
   const onAddMessage = (chatId: string, newMessage: Message) => {
