@@ -1,0 +1,17 @@
+.header {
+    background-color: rgb(221, 211, 211);
+    border: 2px solid grey;
+    padding: 25px 50px;
+    font-size: 20px;
+    font-weight: 600;
+}
+
+.header-list {
+    display: flex;
+    justify-content: space-around;
+    list-style-type:none;
+}
+
+.header-list li {
+    text-decoration: none;
+}
