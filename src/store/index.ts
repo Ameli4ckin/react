@@ -10,13 +10,13 @@ import {
     REGISTER,
 } from 'redux-persist'
 import storage from 'redux-persist/lib/storage'
-import { messagesReducer } from './profile/messages/reduser';
+import { messagesReducer } from './profile/messages/slice';
 import { profileReducer } from './profile/slice';
 
 const persistConfig = {
     key: 'root',
     storage,
-    blacklist: ['profile'],
+    blacklist: [],
 }
 
 const rootReducer = combineReducers({
@@ -27,8 +27,6 @@ const rootReducer = combineReducers({
 const persisredReduser = persistReducer(persistConfig, rootReducer)
 
 export type StoreState = ReturnType<typeof rootReducer>
-
-// export const store = createStore(persisredReduser, applyMiddleware(thunk));
 
 export const store  = configureStore({
     reducer: persisredReduser,

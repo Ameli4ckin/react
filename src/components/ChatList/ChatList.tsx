@@ -3,7 +3,7 @@ import React, { FC, useState } from "react";
 import { customAlphabet } from 'nanoid';
 import { NavLink } from "react-router-dom";
 import { shallowEqual, useDispatch, useSelector } from "react-redux";
-import { addChat, deleteChat } from "../../store/profile/messages/actions";
+import { addChat, deleteChat } from "../../store/profile/messages/slice";
 import { selectChats } from "../../store/profile/messages/selectors";
 
 export const ChatList: FC = () => {
