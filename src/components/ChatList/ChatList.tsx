@@ -1,31 +1,35 @@
 import { ListItem } from "@mui/material";
 import React, { FC, useState } from "react";
-import { customAlphabet } from 'nanoid';
 import { NavLink } from "react-router-dom";
-import { shallowEqual, useDispatch, useSelector } from "react-redux";
-import { addChat, deleteChat } from "../../store/profile/messages/slice";
-import { selectChats } from "../../store/profile/messages/selectors";
+import { db } from "../../services/firebase";
+import { ref, remove, set } from "firebase/database";
+import { nanoid } from "nanoid";
 
-export const ChatList: FC = () => {
+export const ChatList: FC<any> = ({chats}) => {
     const [value, setValue] = useState('');
-    const dispatch = useDispatch();
-    const chats = useSelector(
-        selectChats, 
-        (prev, next) => prev.length === next.length
-    );
 
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
         if(value) {
-            dispatch(addChat(value));
-            setValue('');
+            set(ref(db, `chats/${value}`), {
+                id: nanoid(),
+                name: value,
+            });
+
+            set(ref(db, `messages/${value}`), {
+                name: value,
+            });
         }
-    }
+    };
+
+    const handleDelete = (chatName: string) => {
+        remove (ref(db, `chats/${chatName}`));
+    };
 
     return <>
         <ul>
-            {chats.map((chat) => (
+            {chats.map((chat: any) => (
                 <ListItem key={chat.id}>
                     <NavLink 
                         to={`/chats/${chat.name}`} 
@@ -36,7 +40,7 @@ export const ChatList: FC = () => {
                         {chat.name}
                     </NavLink>
                     <button 
-                        onClick={() => dispatch(deleteChat(chat.name))}
+                        onClick={() => handleDelete(chat.name)}
                     >
                         Удалить
                     </button>
