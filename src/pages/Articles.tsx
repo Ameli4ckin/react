@@ -1,49 +1,30 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { FC } from "react"
-import { api } from "../constants";
-
-interface IArticles {
-    id: string,
-    title: string,
-}
+import { useDispatch, useSelector } from "react-redux";
+import { ThunkDispatch } from "redux-thunk";
+import { StoreState } from "../store";
+import { fetchData } from "../store/articles/slice";
 
 export const Articles: FC = () => {
-    const [loading, setLoading] = useState(false);
-    const [error, setError] = useState('');
-    const [articles, setArticles] = useState<IArticles[]>([]);
+    const loading = useSelector((state: StoreState) => state.articles.loading);
+    const error = useSelector((state: StoreState) => state.articles.error);
+    const articles = useSelector((state: StoreState) => state.articles.articles);
+
+    const fetchDispatch = useDispatch<ThunkDispatch<StoreState, void , any>>();
 
     useEffect(() => {
-        getFetchArticles();
+        handleFetchData();
     }, []);
 
-    const getFetchArticles  = async () => {
-        setLoading(true)
-        setError('');
-        setArticles([]);
-
-        await new Promise((resolve) => setTimeout(resolve, 1000))
-
-        try {
-            const res = await fetch(`${api}/v3/articles`);
-            const data: IArticles[] = await res.json();
-            setArticles(data);
-        } catch (err) {
-            if(err instanceof Error) {
-                setError((err.message));
-            } else {
-                setError('error');
-            }
-
-        } finally {
-            setLoading(false);
-        }
-    };
+    const handleFetchData = () => {
+        fetchDispatch(fetchData());
+    }
 
     return (
         <>
             <h2>Articles</h2>
             {loading && <div>Loading...</div>}
-            <button onClick={getFetchArticles}>Reload</button>
+            <button onClick={() => handleFetchData()}>Reload</button>
             <ul>
                 {articles.map(article => (
                     <li key={article.id}>{article.title}</li>

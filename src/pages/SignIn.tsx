@@ -1,27 +1,31 @@
+import { CircularProgress } from "@mui/material";
 import React, { useState } from "react";
 import { FC } from "react";
-import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { auth } from "../store/profile/slice";
-
+import { logIn } from "../services/firebase";
 
 export const SignIn: FC = () => {
     const [login, setLogin] = useState('');
     const [password, setPassword] = useState('');
-    const [error, setError] = useState(false);
+    const [error, setError] = useState('');
+    const [loading, setLoading] = useState(false);
 
-    const dispatch = useDispatch();
     const navigate = useNavigate();
 
-    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        setError(false);
+        setError('');
+        setLoading(true);
 
-        if(login === 'gb' && password === 'gb') {
-            dispatch(auth(true));
-            navigate(-1);
-        } else {
-            setError(true);
+        try {
+            await logIn(login, password)
+            navigate('/chats');
+        } catch (err) {
+            if (err instanceof Error) {
+                setError(err.message);
+            } 
+        } finally {
+            setLoading(false)
         }
     };
 
@@ -31,19 +35,22 @@ export const SignIn: FC = () => {
             <form onSubmit={handleSubmit}>
                 <p>Ligin:</p>
                 <input 
-                    type="text" 
+                    type="email" 
                     onChange={e => setLogin(e.target.value)} 
                     value={login} 
+                    required
                 />
                 <p>Password:</p>
                 <input 
                     type="password" 
                     onChange={e => setPassword(e.target.value)} 
                     value={password} 
+                    required
                 />
                 <br />
                 <button>Login</button>
             </form>
+            {loading && <CircularProgress />}
             {error && <p style={{color: 'red'}}>Логин или пароль не верны</p>}
         </>
     );
